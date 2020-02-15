@@ -48,6 +48,26 @@ public class CityLinksTest {
       underTest.getCitiesConnection("Houston", "Toronto");
       assertThat(underTest.ifConnectionFound).isEqualTo(false);
       
+      try {
+    	  underTest.getCitiesConnection("", "Toronto");
+      }catch(Exception ex) {
+    	  ex.printStackTrace();
+    	  assertThat(ex.toString()).isEqualTo("java.lang.Exception: The origin and or destination is empty");
+      }
+      
+      try {
+    	  underTest.getCitiesConnection("Toronto", "");
+      }catch(Exception ex) {
+    	  ex.printStackTrace();
+    	  assertThat(ex.toString()).isEqualTo("java.lang.Exception: The origin and or destination is empty");
+      }
+      
+      try {
+    	  underTest.getCitiesConnection("", "");
+      }catch(Exception ex) {
+    	  ex.printStackTrace();
+    	  assertThat(ex.toString()).isEqualTo("java.lang.Exception: The origin and or destination is empty");
+      }
     
   }
 

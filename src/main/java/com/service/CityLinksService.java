@@ -24,7 +24,7 @@ public class CityLinksService {
 		this.allCityLinks = getCities(fileLocation);
 	}
 	
-    public List getCities(String fileLocation) {
+    private List getCities(String fileLocation) {
 
         String csvFile = fileLocation;
         String line = "";
@@ -40,11 +40,15 @@ public class CityLinksService {
                 String[] cities = line.split(cvsSplitBy);
 
                 //System.out.println(country[0] +"  "  + country[1]);
-                list = new HashMap<String, String>();;
-                list.put(cities[0], cities[1]);
-                lists.add(list);
+                list = new HashMap<String, String>();
+                if(cities[0].trim().length()>0 && cities[1].trim().length() >0)
+                {	
+                	list.put(cities[0], cities[1]);
+                	lists.add(list);
+                }
             }
-
+            
+            System.out.println("Print City List "+lists.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -64,21 +68,23 @@ public class CityLinksService {
     
     public String getCitiesConnection(String fromCity, String toCity) throws Exception{
     	
-    	this.ifConnectionFound = false;
-    	List fromList = new ArrayList<>();
-    	Map fromCityMap = new HashMap();
-    	fromCityMap.put(fromCity, fromCity);
-    	fromList.add(fromCityMap);
-    	this.getCityLink(0, 0, fromList, toCity);
-    	if(this.ifConnectionFound) return "Links Exists";
-    	else return "Links Does Not Exists";
+    	if(fromCity != null && fromCity.trim().length() >0 && toCity != null &&  toCity.trim().length() >0)
+    	{	
+	    	this.ifConnectionFound = false;
+	    	List fromList = new ArrayList<>();
+	    	Map fromCityMap = new HashMap();
+	    	fromCityMap.put(fromCity, fromCity);
+	    	fromList.add(fromCityMap);
+	    	this.getCityLink(0, 0, fromList, toCity);
+	    	if(this.ifConnectionFound) return "Links Exists";
+	    	else return "Links Does Not Exists";
+    	} else throw new Exception("The origin and or destination is empty");
     }
     
-    public int getCityLink(int finalListStartIndex, int finalListEndIndex, List fromCity, String toCity) throws Exception{
+    private int getCityLink(int finalListStartIndex, int finalListEndIndex, List fromCity, String toCity) throws Exception{
     	
     	int returnFinal = 0;
     	// Build the Initial of From Cities from the 
-    	
     	if(finalListStartIndex == 0 && finalListEndIndex == 0) {
     		finalListEndIndex = fromCity.size();
     		Iterator iterator = fromCity.iterator();
