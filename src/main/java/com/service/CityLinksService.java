@@ -139,7 +139,7 @@ public class CityLinksService {
     			return returnFinal;
     		}
     		if(finalListEndIndex == fromCity.size()) {
-    			returnFinal+= 0;
+    			returnFinal++;
     			return returnFinal;
     		} else getCityLink(nextStartIndex, fromCity.size(), fromCity, toCity);
     			
