@@ -1,0 +1,14 @@
+Toronto,Buffalo
+Buffalo,NewYork
+Buffalo,Boston
+Boston,Buffalo
+Philadelphia,Buffalo
+Philadelphia,Boston
+NewYork,Washington
+Washington,Boston
+Boston,Philadelphia
+Philadelphia,Miami
+Toronto,Detroit
+Miami,Houston
+Houston,Dallas
+Dallas,Indianapolis
