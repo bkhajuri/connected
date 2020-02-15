@@ -11,5 +11,27 @@ Links Does Not Exists
 If the City link exists
 Links Exists
 
-Test
+The logic works as follows:
+
+Toronto,Buffalo
+Buffalo,NewYork
+Buffalo,Boston
+Boston,Buffalo
+Washington,Las Vegas
+Las Vegas,Washington
+Toronto,NewYork
+NewYork,Boston
+Toronto,Boston
+Philadelphia,Buffalo
+Philadelphia,Boston
+NewYork,Washington
+Washington,Boston
+Boston,Philadelphia
+Philadelphia,Miami
+Toronto,Detroit
+Miami,Houston
+Houston,Dallas
+Dallas,Indianapolis
+
+===============1================
 
