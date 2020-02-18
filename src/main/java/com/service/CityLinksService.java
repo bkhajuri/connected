@@ -97,8 +97,6 @@ public class CityLinksService {
 	    			tempCityToCityList = (List<Map<String, String>>) allCityLinks.stream()
 	    	    	        .filter(map -> ((Map<String, String>) map).containsKey(entry.getKey()))
 	    	    	        .collect(Collectors.toList());
-	    			  	System.out.println("The first List "+tempCityToCityList);
-	    			  	System.out.println("tempCityToCityList.size() "+tempCityToCityList.size() + "connectionNotFound "+connectionNotFound);
 	    			  	
 	    			  	if(tempCityToCityList.size() ==0 )
 	    			  		return connectionNotFound;
@@ -109,9 +107,7 @@ public class CityLinksService {
 		    	        	        .collect(Collectors.toList());
 		    	    		
 		    	    		if(toCityList.size() > 0) {
-		    	    			
 		    	    			connectionNotFound = false;
-		    	    			System.out.println("connectionNotFound set false"+connectionNotFound);
 		    	    			return connectionNotFound;
 		    	    		} else {
 		    			  	if(getCityLink(connectionNotFound, originalFromCity, finalListStartIndex, finalListEndIndex, tempCityToCityList, toCity)) {
@@ -139,8 +135,7 @@ public class CityLinksService {
 	    	    	        .filter(map -> ((Map<String, String>) map).containsKey(entry.getValue()))
 	    	    	        .collect(Collectors.toList());
 	    				tempHoldCity.addAll(tempCityToCityList);
-	    				
-    					System.out.println("Else fromCity "+tempHoldCity.toString());
+	    				System.out.println("Else fromCity "+tempHoldCity.toString());
     					}
 	    			}
     			};
@@ -157,7 +152,6 @@ public class CityLinksService {
     		
     		if(toCityList.size() > 0) {
     			connectionNotFound = false;
-    			System.out.println("connectionNotFound set false"+connectionNotFound);
     			return connectionNotFound;
     		}
     		if(finalListEndIndex == fromCity.size()) {
