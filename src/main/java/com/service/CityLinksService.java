@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class CityLinksService {
 	List allCityLinks = null;
-	String originalFromCity;
-	public boolean ifConnectionFound = false;
 	
 	public CityLinksService() {
 		this.allCityLinks = getCities("src/cities2.csv");
@@ -62,27 +60,31 @@ public class CityLinksService {
     	Map fromCityMap = new HashMap();
     	fromCityMap.put("Houston", "Houston");
     	fromList.add(fromCityMap);
-    	citilinks.getCityLink(0, 0, fromList, "Indianapolis");
-    	System.out.println("Found the connection "+citilinks.ifConnectionFound);
+    	citilinks.getCityLink(false,"Houston", 0, 0, fromList, "Indianapolis");
+    	
     }
     
     public String getCitiesConnection(String fromCity, String toCity) throws Exception{
-    	
+    	String originalFromCity = "";
+    	boolean connectionNotFound = true;
+    	int counter =0;
     	if(fromCity != null && fromCity.trim().length() >0 && toCity != null &&  toCity.trim().length() >0)
     	{	
-	    	this.ifConnectionFound = false;
 	    	List fromList = new ArrayList<>();
 	    	Map fromCityMap = new HashMap();
 	    	fromCityMap.put(fromCity, fromCity);
 	    	fromList.add(fromCityMap);
-	    	this.getCityLink(0, 0, fromList, toCity);
-	    	if(this.ifConnectionFound) return "Links Exists";
+	    	connectionNotFound = this.getCityLink(connectionNotFound, originalFromCity, 0, 0, fromList, toCity);
+	    	System.out.println("connectionNotFound 2 "+connectionNotFound);
+	    	counter++;
+	    	if(!connectionNotFound) return "Links Exists";
 	    	else return "Links Does Not Exists";
     	} else throw new Exception("The origin and or destination is empty");
     }
     
-    private int getCityLink(int finalListStartIndex, int finalListEndIndex, List fromCity, String toCity) throws Exception{
+    private boolean getCityLink(boolean connectionNotFound, String originalFromCity, int finalListStartIndex, int finalListEndIndex, List fromCity, String toCity) throws Exception{
     	
+    	System.out.println("connectionNotFound 1 "+connectionNotFound);
     	int returnFinal = 0;
     	// Build the Initial of From Cities from the 
     	if(finalListStartIndex == 0 && finalListEndIndex == 0) {
@@ -96,18 +98,31 @@ public class CityLinksService {
 	    	    	        .filter(map -> ((Map<String, String>) map).containsKey(entry.getKey()))
 	    	    	        .collect(Collectors.toList());
 	    			  	System.out.println("The first List "+tempCityToCityList);
-	    			  	List<Map<String, String>> toCityList = null;
-	    	    		toCityList = (List<Map<String, String>>) fromCity.stream()
-	    	        	        .filter(map -> ((Map<String, String>) map).containsValue(toCity))
-	    	        	        .collect(Collectors.toList());
-	    	    		if(toCityList.size() > 0) {
-	    	    			this.ifConnectionFound = true;
-	    	    			return returnFinal;
-	    	    		} else {
-	    			  	getCityLink(finalListStartIndex, finalListEndIndex, tempCityToCityList, toCity);  	
+	    			  	System.out.println("tempCityToCityList.size() "+tempCityToCityList.size() + "connectionNotFound "+connectionNotFound);
+	    			  	
+	    			  	if(tempCityToCityList.size() ==0 )
+	    			  		return connectionNotFound;
+	    			  	else {
+		    			  	List<Map<String, String>> toCityList = null;
+		    	    		toCityList = (List<Map<String, String>>) fromCity.stream()
+		    	        	        .filter(map -> ((Map<String, String>) map).containsValue(toCity))
+		    	        	        .collect(Collectors.toList());
+		    	    		
+		    	    		if(toCityList.size() > 0) {
+		    	    			
+		    	    			connectionNotFound = false;
+		    	    			System.out.println("connectionNotFound set false"+connectionNotFound);
+		    	    			return connectionNotFound;
+		    	    		} else {
+		    			  	if(getCityLink(connectionNotFound, originalFromCity, finalListStartIndex, finalListEndIndex, tempCityToCityList, toCity)) {
+		    			  		return true;
+		    			  	}else{
+		    			  		return false;
+		    			  	}	
 	    	    		}
     				}
-    			};
+	    		}
+    		};
     	} else {
     		finalListEndIndex = fromCity.size();
     		Iterator iterator = fromCity.iterator();
@@ -141,18 +156,20 @@ public class CityLinksService {
         	        .collect(Collectors.toList());
     		
     		if(toCityList.size() > 0) {
-    			this.ifConnectionFound = true;
-    			return returnFinal;
+    			connectionNotFound = false;
+    			System.out.println("connectionNotFound set false"+connectionNotFound);
+    			return connectionNotFound;
     		}
     		if(finalListEndIndex == fromCity.size()) {
-    			returnFinal++;
-    			return returnFinal;
-    		} else getCityLink(nextStartIndex, fromCity.size(), fromCity, toCity);
+    			return connectionNotFound;
+    		} else if(getCityLink(connectionNotFound, originalFromCity, nextStartIndex, fromCity.size(), fromCity, toCity)) {
+    			return true;
+    		}else return false;
     			
-    		return returnFinal;
+    		
     	}
-    	return returnFinal;
-    	
+
+    	return connectionNotFound;
     }
    
 }

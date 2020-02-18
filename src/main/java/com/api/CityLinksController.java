@@ -24,7 +24,7 @@ import com.service.CityLinksService;;
 @RequestMapping("api/v1/connected")
 @RestController
 public class CityLinksController {
-	private final CityLinksService countryService;;
+	private CityLinksService countryService;;
 	
 	@Autowired
 	public CityLinksController(CityLinksService countryService) {
@@ -52,6 +52,8 @@ public class CityLinksController {
 		}
 		return result ;
 	}
+	
+	
 	
 }
 

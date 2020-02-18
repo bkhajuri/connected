@@ -26,8 +26,8 @@ public class CityLinksTest {
     // Given person called James Bond aged 33
    
 	  underTest = new CityLinksService();
-	  underTest.getCitiesConnection("Toronto", "Dallas");
-      assertThat(underTest.ifConnectionFound).isEqualTo(true);
+	  String result = underTest.getCitiesConnection("Toronto", "Dallas");
+      assertThat(result).isEqualTo("Links Exists");
     
   }
   
@@ -35,18 +35,16 @@ public class CityLinksTest {
   public void citisLinkTest2() throws Exception{
    
 	  underTest = new CityLinksService();
-	  
-	  underTest.ifConnectionFound = false;
-      underTest.getCitiesConnection("Houston", "Indianapolis");
-      assertThat(underTest.ifConnectionFound).isEqualTo(true);
+	  String result = underTest.getCitiesConnection("Houston", "Indianapolis");
+      assertThat(result).isEqualTo("Links Exists");
       
-      underTest.ifConnectionFound = false;
-	  underTest.getCitiesConnection("Toronto", "Las Vegas");
-	  assertThat(underTest.ifConnectionFound).isEqualTo(true);
+   
+      result  = underTest.getCitiesConnection("Toronto", "Las Vegas");
+	  assertThat(result).isEqualTo("Links Exists");
       
-      underTest.ifConnectionFound = false;
-      underTest.getCitiesConnection("Houston", "Toronto");
-      assertThat(underTest.ifConnectionFound).isEqualTo(false);
+      
+      result = underTest.getCitiesConnection("Houston", "Toronto");
+      assertThat(result).isEqualTo("Links Does Not Exists");
       
       try {
     	  underTest.getCitiesConnection("", "Toronto");
